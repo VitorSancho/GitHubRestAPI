@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\vitor\\OneDrive\\Documentos\\Desafios e Projetos\\GitHubProject\\GitHub.Data\\GitHub.Data.csproj": {}
+    "C:\\Users\\vitor\\OneDrive\\Documentos\\Desafios e Projetos\\GitHubProject\\GitHubRestAPI\\GitHub.Data\\GitHub.Data.csproj": {}
   },
   "projects": {
-    "C:\\Users\\vitor\\OneDrive\\Documentos\\Desafios e Projetos\\GitHubProject\\GitHub.Data\\GitHub.Data.csproj": {
+    "C:\\Users\\vitor\\OneDrive\\Documentos\\Desafios e Projetos\\GitHubProject\\GitHubRestAPI\\GitHub.Data\\GitHub.Data.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\vitor\\OneDrive\\Documentos\\Desafios e Projetos\\GitHubProject\\GitHub.Data\\GitHub.Data.csproj",
+        "projectUniqueName": "C:\\Users\\vitor\\OneDrive\\Documentos\\Desafios e Projetos\\GitHubProject\\GitHubRestAPI\\GitHub.Data\\GitHub.Data.csproj",
         "projectName": "GitHub.Data",
-        "projectPath": "C:\\Users\\vitor\\OneDrive\\Documentos\\Desafios e Projetos\\GitHubProject\\GitHub.Data\\GitHub.Data.csproj",
+        "projectPath": "C:\\Users\\vitor\\OneDrive\\Documentos\\Desafios e Projetos\\GitHubProject\\GitHubRestAPI\\GitHub.Data\\GitHub.Data.csproj",
         "packagesPath": "C:\\Users\\vitor\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\vitor\\OneDrive\\Documentos\\Desafios e Projetos\\GitHubProject\\GitHub.Data\\obj\\",
+        "outputPath": "C:\\Users\\vitor\\OneDrive\\Documentos\\Desafios e Projetos\\GitHubProject\\GitHubRestAPI\\GitHub.Data\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",

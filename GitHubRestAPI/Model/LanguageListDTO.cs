@@ -1,12 +1,10 @@
-﻿namespace GitHubRestAPI.Model
-{
-    public record LanguagesDTO
-    {
-        public IEnumerable<Language> languageList;
-    }
+﻿using System.ComponentModel.DataAnnotations;
 
-    public record Language
+namespace GitHubRestAPI.Model
+{
+    public class LanguagesDTO
     {
-        public string languageName;
+        [Required]
+        public IEnumerable<string> languageList { get; set; }
     }
 }

@@ -1,20 +1,20 @@
-﻿namespace GitHubRestAPI.Model
+﻿namespace GitHubRestAPI.Business
 {
     public class CollectionOfLanguages
     {
-        public IEnumerable<Language> languageList;
+        public IEnumerable<string> languageList { get; set; }
     
-        public void AvaliateNames()
+        public void InsertScapeString()
         {
             foreach(var language in languageList)
             {
-                language.languageName.Replace().Replace();
+                language.Replace("#","%23").Replace("++","%22%22");
             }
         }
     }
 
     public class Language
     {
-        public string languageName;
+        public string languageName { get; set; }
     }
 }

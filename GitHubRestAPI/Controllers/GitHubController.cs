@@ -1,4 +1,6 @@
-using GitHubBusiness;
+using AutoMapper;
+using GitHub.Business;
+using GitHubRestAPI.Business;
 using GitHubRestAPI.Model;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,20 +13,24 @@ namespace GitHubRestAPI.Controllers
         private readonly IGitHubBusiness GitHubBusiness;
 
         private readonly ILogger<GitHubController> _logger;
+        private readonly IMapper Mapper;
 
-        public GitHubController(ILogger<GitHubController> logger, IGitHubBusiness gitHubBusiness)
+        public GitHubController(ILogger<GitHubController> logger, IGitHubBusiness gitHubBusiness, IMapper mapper)
         {
             _logger = logger;
             GitHubBusiness = gitHubBusiness;
+            Mapper = mapper;
         }
 
-        [HttpPut]
-        [Route("[action]")]
+        [HttpPost]
+        [Route("[controller]/teste")]
         public async Task<ActionResult> UpdateFamousRepositoryListFromLanguages([FromBody] LanguagesDTO languageList)
         {
             if (!ModelState.IsValid) return BadRequest();
 
-            var result = GitHubBusiness.UpdateFamousRepositoryFromLanguages(languageList);
+            var languageListMapped =  Mapper.Map<CollectionOfLanguages>(languageList); 
+
+            var result = await GitHubBusiness.UpdateFamousRepositoryFromLanguages(languageListMapped);
 
             return Ok(languageList);
         }

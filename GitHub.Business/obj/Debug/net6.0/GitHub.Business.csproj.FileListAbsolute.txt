@@ -1,0 +1,17 @@
+C:\Users\vitor\OneDrive\Documentos\Desafios e Projetos\GitHubProject\GitHubRestAPI\GitHub.Business\obj\Debug\net6.0\GitHub.Business.csproj.AssemblyReference.cache
+C:\Users\vitor\OneDrive\Documentos\Desafios e Projetos\GitHubProject\GitHubRestAPI\GitHub.Business\obj\Debug\net6.0\GitHub.Business.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\vitor\OneDrive\Documentos\Desafios e Projetos\GitHubProject\GitHubRestAPI\GitHub.Business\obj\Debug\net6.0\GitHub.Business.AssemblyInfoInputs.cache
+C:\Users\vitor\OneDrive\Documentos\Desafios e Projetos\GitHubProject\GitHubRestAPI\GitHub.Business\obj\Debug\net6.0\GitHub.Business.AssemblyInfo.cs
+C:\Users\vitor\OneDrive\Documentos\Desafios e Projetos\GitHubProject\GitHubRestAPI\GitHub.Business\obj\Debug\net6.0\GitHub.Business.csproj.CoreCompileInputs.cache
+C:\Users\vitor\OneDrive\Documentos\Desafios e Projetos\GitHubProject\GitHubRestAPI\GitHub.Business\bin\Debug\net6.0\GitHub.Business.deps.json
+C:\Users\vitor\OneDrive\Documentos\Desafios e Projetos\GitHubProject\GitHubRestAPI\GitHub.Business\bin\Debug\net6.0\GitHub.Business.dll
+C:\Users\vitor\OneDrive\Documentos\Desafios e Projetos\GitHubProject\GitHubRestAPI\GitHub.Business\bin\Debug\net6.0\GitHub.Business.pdb
+C:\Users\vitor\OneDrive\Documentos\Desafios e Projetos\GitHubProject\GitHubRestAPI\GitHub.Business\bin\Debug\net6.0\GitHub.Data.dll
+C:\Users\vitor\OneDrive\Documentos\Desafios e Projetos\GitHubProject\GitHubRestAPI\GitHub.Business\bin\Debug\net6.0\GitHub.Service.dll
+C:\Users\vitor\OneDrive\Documentos\Desafios e Projetos\GitHubProject\GitHubRestAPI\GitHub.Business\bin\Debug\net6.0\GitHub.Data.pdb
+C:\Users\vitor\OneDrive\Documentos\Desafios e Projetos\GitHubProject\GitHubRestAPI\GitHub.Business\bin\Debug\net6.0\GitHub.Service.pdb
+C:\Users\vitor\OneDrive\Documentos\Desafios e Projetos\GitHubProject\GitHubRestAPI\GitHub.Business\obj\Debug\net6.0\GitHub.Business.csproj.CopyComplete
+C:\Users\vitor\OneDrive\Documentos\Desafios e Projetos\GitHubProject\GitHubRestAPI\GitHub.Business\obj\Debug\net6.0\GitHub.Business.dll
+C:\Users\vitor\OneDrive\Documentos\Desafios e Projetos\GitHubProject\GitHubRestAPI\GitHub.Business\obj\Debug\net6.0\refint\GitHub.Business.dll
+C:\Users\vitor\OneDrive\Documentos\Desafios e Projetos\GitHubProject\GitHubRestAPI\GitHub.Business\obj\Debug\net6.0\GitHub.Business.pdb
+C:\Users\vitor\OneDrive\Documentos\Desafios e Projetos\GitHubProject\GitHubRestAPI\GitHub.Business\obj\Debug\net6.0\ref\GitHub.Business.dll

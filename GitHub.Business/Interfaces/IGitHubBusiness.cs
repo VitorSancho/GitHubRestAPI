@@ -1,10 +1,11 @@
 ﻿using GitHub.Business.Model;
+using GitHubRestAPI.Business;
 using GitHubRestAPI.Model;
 
-namespace GitHubBusiness
+namespace GitHub.Business
 {
     public interface IGitHubBusiness
     {
-        Task<ValidationDTO> UpdateFamousRepositoruFromLanguages(CollectionOfLanguages LanguagesList);
+        Task<ValidationDTO> UpdateFamousRepositoryFromLanguages(CollectionOfLanguages LanguagesList);
     }
 }

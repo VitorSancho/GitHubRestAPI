@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "3u1q3C9PXi1Ux02Tov4E+bc3eBWirufievq7BXLriV0Rz5ffoUI2l90U5eHforclnMGSPoQe4SPODVFXjj0t8A==",
+  "dgSpecHash": "mcyTJs0xhZCri/7QSLUhcG03VqEa0JdbTDXLP+Wx+czQ42Qb/hIdnQ6LVixnXxxVFIbRGcuoXu86E5q9wZa+mA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\vitor\\OneDrive\\Documentos\\Desafios e Projetos\\GitHubProject\\GitHub.Data\\GitHub.Data.csproj",
+  "projectFilePath": "C:\\Users\\vitor\\OneDrive\\Documentos\\Desafios e Projetos\\GitHubProject\\GitHubRestAPI\\GitHub.Data\\GitHub.Data.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

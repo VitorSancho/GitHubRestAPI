@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GitHub.Business", "..\GitHu
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GitHub.Service", "..\GitHub.Service\GitHub.Service.csproj", "{006108A3-D86F-4E35-AADC-9DE87DE3EA01}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GitHubRestAPI.Test", "..\GitHubRestAPI.Test\GitHubRestAPI.Test.csproj", "{2F4FD835-C1A6-4060-ABEE-68141CB31E83}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{006108A3-D86F-4E35-AADC-9DE87DE3EA01}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{006108A3-D86F-4E35-AADC-9DE87DE3EA01}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{006108A3-D86F-4E35-AADC-9DE87DE3EA01}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2F4FD835-C1A6-4060-ABEE-68141CB31E83}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F4FD835-C1A6-4060-ABEE-68141CB31E83}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F4FD835-C1A6-4060-ABEE-68141CB31E83}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F4FD835-C1A6-4060-ABEE-68141CB31E83}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

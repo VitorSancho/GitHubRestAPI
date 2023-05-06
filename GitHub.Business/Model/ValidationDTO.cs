@@ -11,16 +11,17 @@ namespace GitHub.Business.Model
     {
         public HttpStatusCode HttpStatusCode;
         public bool IsSucesfull;
-        public int StatusCode;
-
+        public string Message;
         public object Data;
-        
-        public ValidationDTO(HttpStatusCode httpStatusCode,bool isSucesfull, int statusCode, object data)
+
+        public ValidationDTO(HttpStatusCode httpStatusCode,bool isSucesfull, string message, object data=null)
         {
             HttpStatusCode= httpStatusCode;
             IsSucesfull= isSucesfull;
-            StatusCode= statusCode; 
-            Data= data;
+            message = message;
+
+            if(data != null)
+                Data = data;
         }
     }
 }

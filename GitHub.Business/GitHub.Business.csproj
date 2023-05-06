@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\GitHub.Data\GitHub.Data.csproj" />
+    <ProjectReference Include="..\GitHub.Service\GitHub.Service.csproj" />
+  </ItemGroup>
+
 </Project>
