@@ -5,10 +5,11 @@ using GitHubRestAPI.Business;
 using GitHubRestAPI.Model;
 using Microsoft.AspNetCore.Mvc;
 
-namespace GitHubRestAPI.Controllers
+namespace GitHubRestAPI.Controllers.v1
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/v{version:apiVersion}/[controller]")]
+    [ApiVersion("1")]
     public class GitHubController : Controller
     {
         private readonly IGitHubBusiness GitHubBusiness;
@@ -48,7 +49,7 @@ namespace GitHubRestAPI.Controllers
         [Route("[Action]")]
         public async Task<IActionResult> UpdateFamousRepositoryListFromLanguages([FromBody] LanguagesDTO languageList)
         {
-            var languageListMapped =  Mapper.Map<CollectionOfLanguages>(languageList); 
+            var languageListMapped = Mapper.Map<CollectionOfLanguages>(languageList);
 
             var result = await GitHubBusiness.UpdateFamousRepositoryFromLanguages(languageListMapped);
 
@@ -70,11 +71,11 @@ namespace GitHubRestAPI.Controllers
         /// </remarks>
         /// <response code="200">Return List of repositories' information</response>
         /// <response code="400">Something went wrong on request</response>
-        [ProducesResponseType(typeof(ValidationDTO),StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ValidationDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ValidationDTO), StatusCodes.Status400BadRequest)]
         [HttpGet]
         [Route("[Action]")]
-        public async Task<IActionResult> GetCollectedRepositories(string? language=null)
+        public async Task<IActionResult> GetCollectedRepositories(string? language = null)
         {
             var result = await GitHubBusiness.GetCollectedRepositories(language);
 
@@ -95,11 +96,11 @@ namespace GitHubRestAPI.Controllers
         /// </remarks>
         /// <response code="200">Return List of repositories' details</response>
         /// <response code="400">Something went wrong on request</response>    
-        [ProducesResponseType(typeof(ValidationDTO),StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ValidationDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ValidationDTO), StatusCodes.Status400BadRequest)]
         [HttpGet]
         [Route("[Action]")]
-        public async Task<IActionResult> GetCollectedRepositoriesDetails(string? language = null, int? id=0)
+        public async Task<IActionResult> GetCollectedRepositoriesDetails(string? language = null, int? id = 0)
         {
             var result = await GitHubBusiness.GetCollectedRepositoriesDetails(language, id);
 

@@ -3,6 +3,7 @@ using GitHub.Business;
 using GitHub.Data;
 using GitHub.Service;
 using GitHubRestAPI.Profiles;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
 using System.Text.Json.Serialization;
@@ -18,22 +19,41 @@ internal class Program
         builder.Services.AddControllers().AddNewtonsoftJson();
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
+
+        builder.Services.AddApiVersioning( options =>
+        {
+            options.AssumeDefaultVersionWhenUnspecified = true;
+            options.DefaultApiVersion = new ApiVersion(1, 0);
+        });
+
         builder.Services.AddSwaggerGen(options =>
         {
+            var contact = new OpenApiContact
+            {
+                Name = "Vitor Sancho Cardoso",
+                Email = "vitor.sancho07@gmail.com"
+            };
+            var apiDescription = "An ASP.NET Core Web API to consult the most famous programming languages repositories";
+            var apiTitle = "GitHubReastAPI";
             options.SwaggerDoc("v1", new OpenApiInfo
             {
                 Version = "v1",
-                Title = "GitHubReastAPI",
-                Description = "An ASP.NET Core Web API to consult the most famous programming languages repositories",
-                Contact = new OpenApiContact
-                {
-                    Name = "Vitor Sancho Cardoso",
-                    Email = "vitor.sancho07@gmail.com"
-                }
+                Title = apiTitle,
+                Description = apiDescription,
+                Contact = contact
+            }); ;
+
+            options.SwaggerDoc("v2", new OpenApiInfo
+            {
+                Version = "v2",
+                Title = apiTitle,
+                Description = apiDescription,
+                Contact = contact
             });
             var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
             options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
         });
+        builder.Services.AddAndConfigureApiVersioning();
         builder.Services.AddAutoMapper(typeof(ListOfLanguagesProfile));
 
 
@@ -52,6 +72,7 @@ internal class Program
                 c =>
                 {
                     c.SwaggerEndpoint("/swagger/v1/swagger.json", "V1");
+                    c.SwaggerEndpoint("/swagger/v2/swagger.json", "V2");
                 });
         }
 
