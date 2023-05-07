@@ -1,6 +1,6 @@
 ﻿namespace GitHub.Data
 {
-    public class FamousRepositoryDataTable
+    public class GitHubRepositoryDetails
     {
             public int id { get; set; }
             public string name { get; set; }

@@ -27,7 +27,7 @@ namespace GitHub.Service
 
             if (requestResult.StatusCode == System.Net.HttpStatusCode.OK)
             {
-                var data = JsonConvert.DeserializeObject<GitHubRepositoryData>(requestResult.Content);
+                var data = JsonConvert.DeserializeObject<GitHubRepositoryData>(requestResult.Content);                
                 return data.items;
             }
             else

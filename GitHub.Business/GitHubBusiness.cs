@@ -19,14 +19,16 @@ namespace GitHub.Business
         private readonly string GithubSearchErrorMessage;
         private readonly string UpdatedSuccessfullyMessage;
         private readonly string MoreDataThanAllowed;
+        private readonly string GetExecuted;
 
         public GitHubBusiness(IConfiguration configuration, IGitHubService gitHubService, IGitHubRepository gitHubRepository)
         {
-                GitHubService = gitHubService;
+            GitHubService = gitHubService;
             GitHubRepository = gitHubRepository;
             GithubSearchErrorMessage = configuration["Messages:GithubSearchErrorMessage"];
             UpdatedSuccessfullyMessage = configuration["Messages:UpdatedSuccessfullyMessage"];
             MoreDataThanAllowed = configuration["Messages:MoreDataThanAllowed"];
+            GetExecuted = configuration["Messages:GetExecuted"];
 
         }
 
@@ -35,7 +37,7 @@ namespace GitHub.Business
             if (!IsLanguageListValid(LanguagesList))
                 return new ValidationDTO(System.Net.HttpStatusCode.BadRequest, isSucesfull: false, message: MoreDataThanAllowed);           
 
-            await GitHubRepository.CleanDatabaseFromLanguages(LanguagesList.languageList);
+            await GitHubRepository.CleanDatabaseFromLanguages();
 
             LanguagesList.InsertScapeString();
 
@@ -45,7 +47,7 @@ namespace GitHub.Business
 
                 var result = await GitHubRepository.SaveFamousRepositories(repositoriesData);
 
-                var validation = new ValidationDTO(System.Net.HttpStatusCode.OK, isSucesfull: true, message: UpdatedSuccessfullyMessage);
+                var validation = new ValidationDTO(System.Net.HttpStatusCode.Created, isSucesfull: true, message: UpdatedSuccessfullyMessage);
                 return validation;
             }
             catch
@@ -78,6 +80,37 @@ namespace GitHub.Business
             });
            
             return RespositoriesData.ToList();
+        }
+
+        public async Task<ValidationDTO> GetCollectedRepositoriesDetails(string? language, int? id)
+        {
+            try 
+            {
+                var result = await GitHubRepository.GetCollectedRepositoriesDetails(language, id);
+
+                var validation = new ValidationDTO(System.Net.HttpStatusCode.OK, isSucesfull: false, message: GetExecuted, result);
+                return validation;
+            }
+            catch
+            {
+                var validation = new ValidationDTO(System.Net.HttpStatusCode.BadGateway, isSucesfull: false, message: GithubSearchErrorMessage);
+                return validation;
+            }
+        }
+
+        public async Task<ValidationDTO> GetCollectedRepositories(string language)
+        {
+            try
+            {
+                var result = await GitHubRepository.GetCollectedRepositories(language);
+                var validation = new ValidationDTO(System.Net.HttpStatusCode.OK, isSucesfull: false, message: GetExecuted, result);
+                return validation;
+            }
+            catch
+            {
+                var validation = new ValidationDTO(System.Net.HttpStatusCode.BadGateway, isSucesfull: false, message: GithubSearchErrorMessage);
+                return validation;
+            }
         }
     }
 }

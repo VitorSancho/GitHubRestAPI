@@ -7,6 +7,10 @@ namespace GitHub.Data
     {
         Task<bool> SaveFamousRepositories(List<RepositoryData> gitHubRepositoriesData);
 
-        Task CleanDatabaseFromLanguages(IEnumerable<string> gitHubRepositoriesData);
+        Task CleanDatabaseFromLanguages();
+
+        Task<IEnumerable<GitHubRepositoryDetails>> GetCollectedRepositoriesDetails(string? language, int? id);
+
+        Task<IEnumerable<GitHubRepositoryInfo>> GetCollectedRepositories(string? language);
     }
 }

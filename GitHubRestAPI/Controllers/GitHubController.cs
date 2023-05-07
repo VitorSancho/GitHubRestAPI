@@ -31,10 +31,33 @@ namespace GitHubRestAPI.Controllers
 
             var result = await GitHubBusiness.UpdateFamousRepositoryFromLanguages(languageListMapped);
 
+            return ReturnResponse(result);
+        }
+
+        [HttpGet]
+        [Route("[Action]")]
+        public async Task<IActionResult> GetCollectedRepositories(string? language=null)
+        {
+            var result = await GitHubBusiness.GetCollectedRepositories(language);
+
+            return ReturnResponse(result);
+        }
+
+        [HttpGet]
+        [Route("[Action]")]
+        public async Task<IActionResult> GetCollectedRepositoriesDetails(string? language = null, int? id=0)
+        {
+            var result = await GitHubBusiness.GetCollectedRepositoriesDetails(language, id);
+
+            return ReturnResponse(result);
+        }
+
+        private IActionResult ReturnResponse(ValidationDTO result)
+        {
             if (result.IsSucesfull)
                 return Ok(result);
 
-            return BadRequest(result);    
+            return BadRequest(result);
         }
     }
 }

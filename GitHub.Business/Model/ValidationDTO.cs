@@ -18,7 +18,7 @@ namespace GitHub.Business.Model
         {
             HttpStatusCode= httpStatusCode;
             IsSucesfull= isSucesfull;
-            message = message;
+            Message = message;
 
             if(data != null)
                 Data = data;

@@ -104,22 +104,61 @@ namespace GitHub.Data
             Dbconnection.Execute(InsertCommand);
             }
 
-        public async Task CleanDatabaseFromLanguages(IEnumerable<string> ListOfLanguages)
+        public async Task CleanDatabaseFromLanguages()
         {
-            var strDeleteLanguagesInDB = getStrDeleteLanguafesInDB(ListOfLanguages);
+            var strDeleteLanguagesInDB = getStrDeleteLanguafesInDB();
 
-            Dbconnection.Execute(strDeleteLanguagesInDB);
+            await Dbconnection.ExecuteAsync(strDeleteLanguagesInDB);
         }
 
-        private string getStrDeleteLanguafesInDB(IEnumerable<string> ListOfLanguages)
+        private string getStrDeleteLanguafesInDB()
         {
-            var LanguagesWhereInClause = string.Join(",",ListOfLanguages.ToList());
-
-            string LanguagesWhereInClauseAdjusted = "'" + LanguagesWhereInClause.Replace(",", "','") + "'";
-
-            var deleteCommand = $"Delete from dbo.FamousRepositoryData where language in ({LanguagesWhereInClauseAdjusted})";
+            var deleteCommand = $"Delete from dbo.FamousRepositoryData";
 
             return deleteCommand;
+        }
+
+        public async Task<IEnumerable<GitHubRepositoryDetails>> GetCollectedRepositoriesDetails(string? language=null, int? id=0)
+        {
+            string filters = "{where language='@language' and id=@id}";
+            string strSelectCommand = $"select*from dbo.FamousRepositoryData {filters}";            
+            var strInsertBuilder = new StringBuilder(strSelectCommand);
+
+            var commandSelect = BuildStrSelect(strInsertBuilder, filters, language, id);
+
+            var repositoriesDetails = await Dbconnection.QueryAsync<GitHubRepositoryDetails>(commandSelect);
+            return repositoriesDetails;
+
+        }
+
+        public async Task<IEnumerable<GitHubRepositoryInfo>> GetCollectedRepositories(string language)
+        {
+            string filter = "{where language='@language'}";
+            string strSelectCommand = $"select id, name, full_name, language, owner_login, created_at from dbo.FamousRepositoryData {filter}";
+            var strInsertBuilder = new StringBuilder(strSelectCommand);
+
+            var commandSelect = BuildStrSelect(strInsertBuilder, filter, language);
+
+            var repositoriesDetails = await Dbconnection.QueryAsync<GitHubRepositoryInfo>(commandSelect);
+            return repositoriesDetails;
+        }
+
+        private string BuildStrSelect(StringBuilder selectCommand, string filter, string? language = null, int? id = 0)
+        {
+            if (!string.IsNullOrEmpty(language) || !(id == 0))
+            {
+                if (string.IsNullOrEmpty(language))
+                    selectCommand.Replace("@language", language);
+                if ((id == 0))
+                    selectCommand.Replace("@id", id.ToString());
+                selectCommand.Replace("{", "").Replace("}", "");
+            }
+            else
+            {
+                selectCommand.Replace(filter, "");
+            }
+
+            return selectCommand.ToString();
         }
     }
 }
