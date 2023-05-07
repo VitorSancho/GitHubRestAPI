@@ -1,5 +1,6 @@
 using AutoMapper;
 using GitHub.Business;
+using GitHub.Business.Model;
 using GitHubRestAPI.Business;
 using GitHubRestAPI.Model;
 using Microsoft.AspNetCore.Mvc;
@@ -8,7 +9,7 @@ namespace GitHubRestAPI.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class GitHubController : ControllerBase
+    public class GitHubController : Controller
     {
         private readonly IGitHubBusiness GitHubBusiness;
 
@@ -23,16 +24,17 @@ namespace GitHubRestAPI.Controllers
         }
 
         [HttpPost]
-        [Route("[controller]/teste")]
-        public async Task<ActionResult> UpdateFamousRepositoryListFromLanguages([FromBody] LanguagesDTO languageList)
+        [Route("[Action]")]
+        public async Task<IActionResult> UpdateFamousRepositoryListFromLanguages([FromBody] LanguagesDTO languageList)
         {
-            if (!ModelState.IsValid) return BadRequest();
-
             var languageListMapped =  Mapper.Map<CollectionOfLanguages>(languageList); 
 
             var result = await GitHubBusiness.UpdateFamousRepositoryFromLanguages(languageListMapped);
 
-            return Ok(languageList);
+            if (result.IsSucesfull)
+                return Ok(result);
+
+            return BadRequest(result);    
         }
     }
 }

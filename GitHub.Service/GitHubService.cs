@@ -1,7 +1,7 @@
-﻿using GitHubRestAPI.Model;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using RestSharp;
-using static GitHubRestAPI.Model.GitHubRepositoryData;
+using GitHub.Data.Model;
+using static GitHub.Data.Model.GitHubRepositoryData;
 
 namespace GitHub.Service
 {
@@ -14,7 +14,7 @@ namespace GitHub.Service
         public GitHubService()
         {
             BaseGitHubUrl = "https://api.github.com";
-            SearchRepositoryRoute = "search/repositories?q=language:PYTHON&sort:stars&per_page=5";
+            SearchRepositoryRoute = "search/repositories?q=language:{language}&sort:stars&per_page=5";
             HttpClient = new RestClient(BaseGitHubUrl);
         }
 
@@ -22,7 +22,7 @@ namespace GitHub.Service
         {
             Console.WriteLine($"Colletion data of {language} repository");
 
-            var request = new RestRequest(SearchRepositoryRoute);
+            var request = new RestRequest(SearchRepositoryRoute.Replace("language",language));
             var requestResult = await HttpClient.GetAsync(request);
 
             if (requestResult.StatusCode == System.Net.HttpStatusCode.OK)

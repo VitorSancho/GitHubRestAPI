@@ -1,5 +1,5 @@
-﻿using GitHubRestAPI.Model;
-using static GitHubRestAPI.Model.GitHubRepositoryData;
+﻿using GitHub.Data.Model;
+using static GitHub.Data.Model.GitHubRepositoryData;
 
 namespace GitHub.Service
 {

@@ -1,4 +1,4 @@
-﻿namespace GitHubRestAPI.Model
+﻿namespace GitHub.Data.Model
 {
     public class GitHubRepositoryData
     {

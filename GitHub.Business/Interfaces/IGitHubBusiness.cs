@@ -1,6 +1,5 @@
 ﻿using GitHub.Business.Model;
 using GitHubRestAPI.Business;
-using GitHubRestAPI.Model;
 
 namespace GitHub.Business
 {

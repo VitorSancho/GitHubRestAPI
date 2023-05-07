@@ -1,9 +1,13 @@
 ﻿using GitHub.Business.Model;
 using GitHub.Data;
+using GitHub.Data.Model;
 using GitHub.Service;
 using GitHubRestAPI.Business;
-using GitHubRestAPI.Model;
-using static GitHubRestAPI.Model.GitHubRepositoryData;
+using Microsoft.Extensions.Configuration;
+using System.Collections.Concurrent;
+using System.Configuration;
+using System.Data.SqlClient;
+using static GitHub.Data.Model.GitHubRepositoryData;
 
 namespace GitHub.Business
 {
@@ -13,46 +17,67 @@ namespace GitHub.Business
         private readonly IGitHubService GitHubService;
         private readonly IGitHubRepository GitHubRepository;
         private readonly string GithubSearchErrorMessage;
+        private readonly string UpdatedSuccessfullyMessage;
+        private readonly string MoreDataThanAllowed;
 
-        public GitHubBusiness(IGitHubService gitHubService, IGitHubRepository gitHubRepository)
+        public GitHubBusiness(IConfiguration configuration, IGitHubService gitHubService, IGitHubRepository gitHubRepository)
         {
-            GitHubService = gitHubService;
+                GitHubService = gitHubService;
             GitHubRepository = gitHubRepository;
-            GithubSearchErrorMessage = "";
+            GithubSearchErrorMessage = configuration["Messages:GithubSearchErrorMessage"];
+            UpdatedSuccessfullyMessage = configuration["Messages:UpdatedSuccessfullyMessage"];
+            MoreDataThanAllowed = configuration["Messages:MoreDataThanAllowed"];
+
         }
 
         public async Task<ValidationDTO> UpdateFamousRepositoryFromLanguages(CollectionOfLanguages LanguagesList)
         {
-            //if (!IsLanguageListValid(LanguagesList))
-            //    return null;   
-            
+            if (!IsLanguageListValid(LanguagesList))
+                return new ValidationDTO(System.Net.HttpStatusCode.BadRequest, isSucesfull: false, message: MoreDataThanAllowed);           
+
+            await GitHubRepository.CleanDatabaseFromLanguages(LanguagesList.languageList);
+
             LanguagesList.InsertScapeString();
 
             try
             {
-                var repositoriesData = await GetFamousRepositoriesFromLanguages(LanguagesList);
+                var repositoriesData = await GetFamousRepositoriesFromLanguagesParallel(LanguagesList);
 
-                await GitHubRepository.SaveFamousRepositories(repositoriesData);
+                var result = await GitHubRepository.SaveFamousRepositories(repositoriesData);
+
+                var validation = new ValidationDTO(System.Net.HttpStatusCode.OK, isSucesfull: true, message: UpdatedSuccessfullyMessage);
+                return validation;
             }
             catch
             {
                 var validation = new ValidationDTO(System.Net.HttpStatusCode.BadGateway, isSucesfull: false, message: GithubSearchErrorMessage);
-            
+                return validation;
             }
-            return null;
         }
 
         private bool IsLanguageListValid(CollectionOfLanguages LanguageList)
         {
-            return LanguageList.languageList.Count() == 5;
+            return LanguageList.languageList.Count() <= 5;
         }
         
-        private async Task<List<RepositoryData>> GetFamousRepositoriesFromLanguages(CollectionOfLanguages LanguagesList)
+        private async Task<List<RepositoryData>> GetFamousRepositoriesFromLanguagesParallel(CollectionOfLanguages LanguagesList)
         {
-            var getRespositoriesDataTask = LanguagesList.languageList.Select(language => GitHubService.GetFamousRepositoryFromLanguage(language));
-            var RespositoriesData = await Task.WhenAll(getRespositoriesDataTask);
+            var RespositoriesData = new ConcurrentBag<RepositoryData>();
 
-            return RespositoriesData.SelectMany(r => r).ToList();
+            ParallelOptions parallelOptions = new()
+            { MaxDegreeOfParallelism = 5 };
+
+            Parallel.ForEach(LanguagesList.languageList, language =>
+            {
+                var data = GitHubService.GetFamousRepositoryFromLanguage(language).Result;
+
+                Parallel.ForEach(data, repositoryData =>
+                {
+                    RespositoriesData.Add(repositoryData);
+                });
+            });
+           
+            return RespositoriesData.ToList();
         }
     }
 }
