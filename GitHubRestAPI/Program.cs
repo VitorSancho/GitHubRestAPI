@@ -60,7 +60,8 @@ internal class Program
         builder.Services.AddSingleton<IGitHubBusiness, GitHubBusiness>();
         builder.Services.AddSingleton<IGitHubService, GitHubService>();
         builder.Services.AddSingleton<IGitHubRepository, GitHubRepository>();
-        
+
+        builder.Services.AddCors();
 
         var app = builder.Build();
 
@@ -75,6 +76,14 @@ internal class Program
                     c.SwaggerEndpoint("/swagger/v2/swagger.json", "V2");
                 });
         }
+
+        app.UseCors(c =>
+        {
+            c.AllowAnyHeader();
+            c.AllowAnyMethod();
+            c.AllowAnyOrigin();
+        }
+        );
 
         app.UseHttpsRedirection();
 

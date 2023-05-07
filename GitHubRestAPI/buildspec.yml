@@ -1,0 +1,22 @@
+﻿env:
+    variables:
+        PROJECT: GitHubRestAPI
+
+phases:   
+    pre_build:
+        commands:
+            - dotnet restore
+      
+    build:
+        commands:
+            - dotnet build -c Release
+      
+    post_build:
+        commands:
+            - dotnet publish -c Release  -r linux-x64 -o ./build_output ./${PROJECT}/${PROJECT}.Api.csproj --self-contained false
+
+artifacts:
+    files:
+        - '**/*'
+    base-directory: ./build_output
+    discard-paths: no
