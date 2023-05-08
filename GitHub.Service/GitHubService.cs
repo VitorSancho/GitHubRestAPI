@@ -18,6 +18,9 @@ namespace GitHub.Service
             HttpClient = new RestClient(BaseGitHubUrl);
         }
 
+        /// <summary>
+        /// Uses GitHubAPI to get data from most famous language's repositories.
+        /// </summary>
         public async Task<List<RepositoryData>> GetFamousRepositoryFromLanguage(string language)
         {
             Console.WriteLine($"Colletion data of {language} repository");

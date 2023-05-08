@@ -14,17 +14,21 @@ namespace GitHub.Data
     public class GitHubRepository : IGitHubRepository
     {
         private DbConnection Dbconnection;
-        private readonly string strConnection;
-        private readonly string strInsertFamousRepositories;
+        private readonly string StrConnection;
+        private readonly string StrInsertFamousRepositories;
 
         public GitHubRepository(IConfiguration configuration)
         {
-            strConnection = configuration["ConnectionStrings:DefaultConnection"];
-            strInsertFamousRepositories = configuration["SQLscripts:InsertFamousRepositories"];
+            StrConnection = configuration["ConnectionStrings:DefaultConnection"];
+            StrInsertFamousRepositories = configuration["SQLscripts:InsertFamousRepositories"];
 
             DBConnect();
         }
 
+        /// <summary>
+        /// Saves list of repository data on data base.
+        /// </summary>
+        /// <param name="gitHubRepositoriesData">Language that will be search</param>
         public async Task<bool> SaveFamousRepositories(List<RepositoryData> gitHubRepositoriesData)
         {
             try
@@ -40,16 +44,86 @@ namespace GitHub.Data
            
         }
 
+        
+
+        /// <summary>
+        /// Clean database for a new colletion proccess
+        /// </summary>
+        public async Task CleanDatabaseFromLanguages()
+        {
+            var strDeleteLanguagesInDB = getStrDeleteLanguafesInDB();
+
+            await Dbconnection.ExecuteAsync(strDeleteLanguagesInDB);
+        }
+
+        /// <summary>
+        /// Get repositories data with it details
+        /// </summary>
+        /// <param name="language">Language that will be search</param>
+        /// <param name="id">Id of specific repository</param>
+        public async Task<IEnumerable<GitHubRepositoryDetails>> GetCollectedRepositoriesDetails(string? language=null, int? id=0)
+        {
+            string filters = "{where language='@language' and id=@id}";
+            string strSelectCommand = $"select*from dbo.FamousRepositoryData {filters}";            
+            var strInsertBuilder = new StringBuilder(strSelectCommand);
+
+            var commandSelect = BuildStrSelect(strInsertBuilder, filters, language, id);
+
+            var repositoriesDetails = await Dbconnection.QueryAsync<GitHubRepositoryDetails>(commandSelect);
+            return repositoriesDetails;
+
+        }
+        /// <summary>
+        /// Saves list of repository information from data base.
+        /// </summary>
+        /// <param name="language">Language that will be search</param>
+        public async Task<IEnumerable<GitHubRepositoryInfo>> GetCollectedRepositories(string language)
+        {
+            string filter = "{where language='@language'}";
+            string strSelectCommand = $"select id, name, full_name, language, owner_login, created_at from dbo.FamousRepositoryData {filter}";
+            var strInsertBuilder = new StringBuilder(strSelectCommand);
+
+            var commandSelect = BuildStrSelect(strInsertBuilder, filter, language);
+
+            var repositoriesDetails = await Dbconnection.QueryAsync<GitHubRepositoryInfo>(commandSelect);
+            return repositoriesDetails;
+        }
+
+        private string getStrDeleteLanguafesInDB()
+        {
+            var deleteCommand = $"Delete from dbo.FamousRepositoryData";
+
+            return deleteCommand;
+        }
+
+        private string BuildStrSelect(StringBuilder selectCommand, string filter, string? language = null, int? id = 0)
+        {
+            if (!string.IsNullOrEmpty(language) || !(id == 0))
+            {
+                if (string.IsNullOrEmpty(language))
+                    selectCommand.Replace("@language", language);
+                if ((id == 0))
+                    selectCommand.Replace("@id", id.ToString());
+                selectCommand.Replace("{", "").Replace("}", "");
+            }
+            else
+            {
+                selectCommand.Replace(filter, "");
+            }
+
+            return selectCommand.ToString();
+        }
+
         private void DBConnect()
         {
             if (Dbconnection == null)
-                Dbconnection = new SqlConnection(strConnection);
+                Dbconnection = new SqlConnection(StrConnection);
         }
 
         private async Task InsertRepositoryData(List<RepositoryData> gitHubRepositoriesData)
         {
-            foreach(var repositoryData in gitHubRepositoriesData)
-            { 
+            foreach (var repositoryData in gitHubRepositoriesData)
+            {
                 var insertCommand = getInsertString(repositoryData);
 
                 executeInsert(insertCommand);
@@ -102,63 +176,6 @@ namespace GitHub.Data
             DBConnect();
 
             Dbconnection.Execute(InsertCommand);
-            }
-
-        public async Task CleanDatabaseFromLanguages()
-        {
-            var strDeleteLanguagesInDB = getStrDeleteLanguafesInDB();
-
-            await Dbconnection.ExecuteAsync(strDeleteLanguagesInDB);
-        }
-
-        private string getStrDeleteLanguafesInDB()
-        {
-            var deleteCommand = $"Delete from dbo.FamousRepositoryData";
-
-            return deleteCommand;
-        }
-
-        public async Task<IEnumerable<GitHubRepositoryDetails>> GetCollectedRepositoriesDetails(string? language=null, int? id=0)
-        {
-            string filters = "{where language='@language' and id=@id}";
-            string strSelectCommand = $"select*from dbo.FamousRepositoryData {filters}";            
-            var strInsertBuilder = new StringBuilder(strSelectCommand);
-
-            var commandSelect = BuildStrSelect(strInsertBuilder, filters, language, id);
-
-            var repositoriesDetails = await Dbconnection.QueryAsync<GitHubRepositoryDetails>(commandSelect);
-            return repositoriesDetails;
-
-        }
-
-        public async Task<IEnumerable<GitHubRepositoryInfo>> GetCollectedRepositories(string language)
-        {
-            string filter = "{where language='@language'}";
-            string strSelectCommand = $"select id, name, full_name, language, owner_login, created_at from dbo.FamousRepositoryData {filter}";
-            var strInsertBuilder = new StringBuilder(strSelectCommand);
-
-            var commandSelect = BuildStrSelect(strInsertBuilder, filter, language);
-
-            var repositoriesDetails = await Dbconnection.QueryAsync<GitHubRepositoryInfo>(commandSelect);
-            return repositoriesDetails;
-        }
-
-        private string BuildStrSelect(StringBuilder selectCommand, string filter, string? language = null, int? id = 0)
-        {
-            if (!string.IsNullOrEmpty(language) || !(id == 0))
-            {
-                if (string.IsNullOrEmpty(language))
-                    selectCommand.Replace("@language", language);
-                if ((id == 0))
-                    selectCommand.Replace("@id", id.ToString());
-                selectCommand.Replace("{", "").Replace("}", "");
-            }
-            else
-            {
-                selectCommand.Replace(filter, "");
-            }
-
-            return selectCommand.ToString();
         }
     }
 }

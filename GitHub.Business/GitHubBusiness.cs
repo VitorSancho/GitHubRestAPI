@@ -32,6 +32,10 @@ namespace GitHub.Business
 
         }
 
+        /// <summary>
+        /// Clean database ands save repository data of language that will be search
+        /// </summary>
+        /// <param name="LanguagesList">List of language that will be searched and saved on database</param>
         public async Task<ValidationDTO> UpdateFamousRepositoryFromLanguages(CollectionOfLanguages LanguagesList)
         {
             if (!IsLanguageListValid(LanguagesList))
@@ -57,31 +61,11 @@ namespace GitHub.Business
             }
         }
 
-        private bool IsLanguageListValid(CollectionOfLanguages LanguageList)
-        {
-            return LanguageList.languageList.Count() <= 5;
-        }
-        
-        private async Task<List<RepositoryData>> GetFamousRepositoriesFromLanguagesParallel(CollectionOfLanguages LanguagesList)
-        {
-            var RespositoriesData = new ConcurrentBag<RepositoryData>();
-
-            ParallelOptions parallelOptions = new()
-            { MaxDegreeOfParallelism = 5 };
-
-            Parallel.ForEach(LanguagesList.languageList, language =>
-            {
-                var data = GitHubService.GetFamousRepositoryFromLanguage(language).Result;
-
-                Parallel.ForEach(data, repositoryData =>
-                {
-                    RespositoriesData.Add(repositoryData);
-                });
-            });
-           
-            return RespositoriesData.ToList();
-        }
-
+        /// <summary>
+        /// Get repositories data with it details
+        /// </summary>
+        /// <param name="language">Language that will be search</param>
+        /// <param name="id">Id of specific repository</param>
         public async Task<ValidationDTO> GetCollectedRepositoriesDetails(string? language, int? id)
         {
             try 
@@ -98,12 +82,16 @@ namespace GitHub.Business
             }
         }
 
+        /// <summary>
+        /// Get sim data of repositories 
+        /// </summary>
+        /// <param name="language">Language that will be search</param>
         public async Task<ValidationDTO> GetCollectedRepositories(string language)
         {
             try
             {
                 var result = await GitHubRepository.GetCollectedRepositories(language);
-                var validation = new ValidationDTO(System.Net.HttpStatusCode.OK, isSucesfull: false, message: GetExecuted, result);
+                var validation = new ValidationDTO(System.Net.HttpStatusCode.OK, isSucesfull: true, message: GetExecuted, result);
                 return validation;
             }
             catch
@@ -111,6 +99,31 @@ namespace GitHub.Business
                 var validation = new ValidationDTO(System.Net.HttpStatusCode.BadGateway, isSucesfull: false, message: GithubSearchErrorMessage);
                 return validation;
             }
+        }
+
+        private bool IsLanguageListValid(CollectionOfLanguages LanguageList)
+        {
+            return LanguageList.languageList.Count() <= 5;
+        }
+
+        private async Task<List<RepositoryData>> GetFamousRepositoriesFromLanguagesParallel(CollectionOfLanguages LanguagesList)
+        {
+            var RespositoriesData = new ConcurrentBag<RepositoryData>();
+
+            ParallelOptions parallelOptions = new()
+            { MaxDegreeOfParallelism = 5 };
+
+            Parallel.ForEach(LanguagesList.languageList, language =>
+            {
+                var data = GitHubService.GetFamousRepositoryFromLanguage(language).Result;
+
+                Parallel.ForEach(data, repositoryData =>
+                {
+                    RespositoriesData.Add(repositoryData);
+                });
+            });
+
+            return RespositoriesData.ToList();
         }
     }
 }

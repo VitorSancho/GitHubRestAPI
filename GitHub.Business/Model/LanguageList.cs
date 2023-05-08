@@ -2,14 +2,12 @@
 {
     public class CollectionOfLanguages
     {
-        public IEnumerable<string> languageList { get; set; }
-    
+        public List<string> languageList { get; set; }
+
         public void InsertScapeString()
         {
-            foreach(var language in languageList)
-            {
-                language.Replace("#","%23").Replace("++","%22%22");
-            }
+            languageList = languageList.Select(x => x.Replace("#", "%23").Replace("++", "%2B%2B")).ToList();
+
         }
     }
 
