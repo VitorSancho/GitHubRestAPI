@@ -2,6 +2,7 @@
 using RestSharp;
 using GitHub.Data.Model;
 using static GitHub.Data.Model.GitHubRepositoryData;
+using Microsoft.Extensions.Configuration;
 
 namespace GitHub.Service
 {
@@ -11,10 +12,10 @@ namespace GitHub.Service
         private string SearchRepositoryRoute { get; set; }
         private RestClient HttpClient { get; set; }
 
-        public GitHubService()
+        public GitHubService(IConfiguration configuration)
         {
-            BaseGitHubUrl = "https://api.github.com";
-            SearchRepositoryRoute = "search/repositories?q=language:{language}&sort:stars&per_page=5";
+            BaseGitHubUrl = configuration["BaseGitHubUrl"]; ;
+            SearchRepositoryRoute = configuration["SearchRepositoryRoute"]; ;
             HttpClient = new RestClient(BaseGitHubUrl);
         }
 
@@ -25,7 +26,7 @@ namespace GitHub.Service
         {
             Console.WriteLine($"Colletion data of {language} repository");
 
-            var request = new RestRequest(SearchRepositoryRoute.Replace("language",language));
+            var request = new RestRequest(SearchRepositoryRoute.Replace("{language}",language));
             var requestResult = await HttpClient.GetAsync(request);
 
             if (requestResult.StatusCode == System.Net.HttpStatusCode.OK)
