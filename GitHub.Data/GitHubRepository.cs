@@ -134,7 +134,7 @@ namespace GitHub.Data
         {
             var strInsertFamousRepositories = @"INSERT INTO dbo.FamousRepositoryData
                                         VALUES
-                                       (@id,'@name','@full_name','@language'
+                                       (@id,N'@name',N'@full_name','@language'
                                        ,'@owner_login',@owner_id
                                        ,'@owner_url','@html_url'
                                        ,N'@description','@repository_url','@collaborators_url'
@@ -153,7 +153,7 @@ namespace GitHub.Data
             strInsertBuilder.Replace("@owner_id", repositoryData.owner.id.ToString());
             strInsertBuilder.Replace("@owner_url", repositoryData.owner.url);
             strInsertBuilder.Replace("@html_url", repositoryData.html_url);
-            strInsertBuilder.Replace("@description", repositoryData.description);
+            strInsertBuilder.Replace("@description", repositoryData.description.Replace("'","''"));
             strInsertBuilder.Replace("@repository_url", repositoryData.url);
             strInsertBuilder.Replace("@collaborators_url", repositoryData.collaborators_url);
             strInsertBuilder.Replace("@commits_url", repositoryData.commits_url);
