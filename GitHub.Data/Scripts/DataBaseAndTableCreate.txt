@@ -6,11 +6,12 @@ CREATE TABLE FamousRepositoryData (
 id int,
 name varchar(20) ,
 full_name varchar(100),
+language varchar(100),
 owner_login varchar(100),
 owner_id int ,
 owner_url varchar(100),
 html_url varchar(100),
-description varchar(100),
+description varchar(200),
 repository_url varchar(100),
 collaborators_url varchar(100),
 commits_url varchar(100),
@@ -22,6 +23,5 @@ stargazers_count int,
 watchers_count int ,
 has_wiki bit ,
 license_key varchar(100),
-license_name varchar(100),
-visibility varchar(100)
+license_name varchar(100)
 );

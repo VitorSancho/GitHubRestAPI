@@ -137,7 +137,7 @@ namespace GitHub.Data
                                        (@id,'@name','@full_name','@language'
                                        ,'@owner_login',@owner_id
                                        ,'@owner_url','@html_url'
-                                       ,'@description','@repository_url','@collaborators_url'
+                                       ,N'@description','@repository_url','@collaborators_url'
                                        ,'@commits_url',CAST('@created_at' AS DATE)
                                        ,CAST('@updated_at' AS DATE),CAST('@pushed_at' AS DATE)
                                        ,'@clone_url',@stargazers_count
